@@ -19,6 +19,7 @@ import type {
   SandpackInternalProvider,
   SandpackProviderState,
   SandpackProviderProps,
+  Selection,
 } from "../types";
 import {
   convertedFilesToBundlerFiles,
@@ -75,6 +76,7 @@ export class SandpackProviderClass extends React.PureComponent<
       visibleFiles,
       visibleFilesFromProps: visibleFiles,
       activeFile,
+      activeSelection: undefined,
       startRoute: this.props.options?.startRoute,
       bundlerState: undefined,
       error: null,
@@ -463,8 +465,8 @@ export class SandpackProviderClass extends React.PureComponent<
     }
   };
 
-  setActiveFile = (activeFile: string): void => {
-    this.setState({ activeFile });
+  setActiveFile = (activeFile: string, activeSelection?: Selection): void => {
+    this.setState({ activeFile, activeSelection });
   };
 
   openFile = (path: string): void => {
@@ -616,6 +618,7 @@ export class SandpackProviderClass extends React.PureComponent<
     const {
       files,
       activeFile,
+      activeSelection,
       visibleFiles,
       visibleFilesFromProps,
       startRoute,
@@ -633,6 +636,7 @@ export class SandpackProviderClass extends React.PureComponent<
       visibleFiles,
       visibleFilesFromProps,
       activeFile,
+      activeSelection,
       startRoute,
       error,
       bundlerState,

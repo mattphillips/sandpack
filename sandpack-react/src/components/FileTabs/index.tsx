@@ -141,7 +141,9 @@ export const FileTabs = ({
             aria-selected={filePath === activeFile}
             className={classNames(c("tab-button"), buttonClassName, tabButton)}
             data-active={filePath === activeFile}
-            onClick={(): void => setActiveFile(filePath)}
+            onClick={(): void =>
+              setActiveFile(filePath, { line: 37, column: 5 })
+            }
             role="tab"
             title={filePath}
             type="button"

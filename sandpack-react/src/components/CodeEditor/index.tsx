@@ -94,7 +94,7 @@ export const SandpackCodeEditor = React.forwardRef<
   ) => {
     const { sandpack } = useSandpack();
     const { code, updateCode, readOnly: readOnlyFile } = useActiveCode();
-    const { activeFile, status, editorState } = sandpack;
+    const { activeFile, activeSelection, status, editorState } = sandpack;
     const shouldShowTabs = showTabs ?? sandpack.visibleFiles.length > 1;
 
     const c = useClasser(THEME_PREFIX);
@@ -120,6 +120,7 @@ export const SandpackCodeEditor = React.forwardRef<
             initMode={initMode || sandpack.initMode}
             onCodeUpdate={handleCodeUpdate}
             readOnly={readOnly || readOnlyFile}
+            selection={activeSelection}
             showInlineErrors={showInlineErrors}
             showLineNumbers={showLineNumbers}
             showReadOnly={showReadOnly}

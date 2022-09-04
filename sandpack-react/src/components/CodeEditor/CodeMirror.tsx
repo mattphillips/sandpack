@@ -64,6 +64,7 @@ export type Decorators = Array<{
 
 interface CodeMirrorProps {
   code: string;
+  selection?: { line: number; column: number };
   filePath?: string;
   fileType?:
     | "js"
@@ -129,6 +130,7 @@ export const CodeMirror = React.forwardRef<CodeMirrorRef, CodeMirrorProps>(
       id,
       extensions = [],
       extensionsKeymap = [],
+      selection,
     },
     ref
   ) => {
@@ -284,9 +286,23 @@ export const CodeMirror = React.forwardRef<CodeMirrorRef, CodeMirrorProps>(
           extensionList.push(highlightInlineError());
         }
 
+        let editorSelection: EditorSelection;
+
+        try {
+          const line = EditorState.create({ doc: code }).doc.line(
+            selection?.line || 1
+          );
+          editorSelection = EditorSelection.single(
+            line.from + (selection?.column || 0)
+          );
+        } catch (e) {
+          editorSelection = EditorSelection.single(0);
+        }
+
         const startState = EditorState.create({
           doc: code,
           extensions: extensionList,
+          selection: editorSelection,
         });
 
         const parentDiv = wrapper.current;
@@ -323,6 +339,11 @@ export const CodeMirror = React.forwardRef<CodeMirrorRef, CodeMirrorProps>(
           view.contentDOM.classList.add("cm-readonly");
         }
 
+        if (selection) {
+          view.focus();
+          view.scrollPosIntoView(editorSelection.ranges[0].from);
+        }
+
         cmView.current = view;
       }, 0);
 
@@ -340,6 +361,7 @@ export const CodeMirror = React.forwardRef<CodeMirrorRef, CodeMirrorProps>(
       themeId,
       sortedDecorators,
       readOnly,
+      selection,
     ]);
 
     React.useEffect(

@@ -532,6 +532,7 @@ export interface SandpackState {
    * when the component mounts
    */
   activeFile: string;
+  activeSelection?: Selection;
   startRoute?: string;
 
   /**
@@ -556,7 +557,7 @@ export interface SandpackState {
   openFile: (path: string) => void;
   closeFile: (path: string) => void;
   deleteFile: (path: string) => void;
-  setActiveFile: (path: string) => void;
+  setActiveFile: (path: string, selection?: Selection) => void;
   resetFile: (path: string) => void;
   resetAllFiles: () => void;
   registerReactDevTools: (value: ReactDevToolsMode) => void;
@@ -641,6 +642,13 @@ export interface FileResolver {
   isFile: (path: string) => Promise<boolean>;
   readFile: (path: string) => Promise<string>;
 }
+/**
+ * @hidden
+ */
+export interface Selection {
+  line: number;
+  column: number;
+}
 
 /**
  * @hidden
@@ -653,6 +661,7 @@ export interface SandpackProviderState {
     TemplateFiles<SandpackPredefinedTemplate> | string
   >;
   activeFile: TemplateFiles<SandpackPredefinedTemplate> | string;
+  activeSelection?: Selection;
   startRoute?: string;
   initMode: SandpackInitMode;
   bundlerState?: BundlerState;
